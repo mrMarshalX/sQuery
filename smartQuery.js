@@ -68,7 +68,7 @@
 		return this;
 	};
 
-	Element.prototype.children = function () {
+	Element.prototype.getChildren = function () {
 		return this.children;
 	};
 
@@ -76,17 +76,13 @@
 		return this.cloneNode();
 	};
 
-	Element.prototype.contains = function (el) {
-		var e = this.isDOMElement(el) ? el : this.$(el);
-		return this.contains(e);
-	};
-
 	Element.prototype.containsSelector = function (selector) {
 		return this.querySelector(selector) !== null;
 	};
 
 	Element.prototype.empty = function () {
-		return this.innerHTML = '';
+		this.innerHTML = '';
+		return this;
 	};
 
 	Element.prototype.isEmpty = function () {
@@ -121,7 +117,7 @@
 		return sQuery.isDOMElement(arg) ? this === arg : this.webkitMatchesSelector(arg);		
 	};
 
-	Element.prototype.next = function () {
+	Element.prototype.nextElement = function () {
 		return this.nextElementSibling;
 	};
 
@@ -133,6 +129,16 @@
 		return this.parentNode;
 	};
 
+	Element.prototype.offset = function () {
+		var boundings = this.getBoundingClientRect();
+		return {
+			top: boundings.top,
+			left: boundings.left,
+			right: boundings.right,
+			bottom: boundings.bottom			
+		}
+	};
+
 	Element.prototype.remove = function () {
 		return this.parentNode.removeChild(this);
 	};
@@ -141,7 +147,6 @@
 		return this.outerHTML = string;
 	};
 
-	// TODO: look at this;
 	Element.prototype.siblings = function () {
 		var that = this, siblings = [];
 		Array.prototype.filter.call(this.parentNode.children, function (child) {
