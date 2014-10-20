@@ -2,10 +2,11 @@
 // @author Marcin Strażyński (m.strazynski@gmail.com)
 
 (function (root) {
-	var prefix = '[Root] ';
+	var prefix = '[Root] ',
+		helpers = helpers || {},
+		version = '0.0.3';
+
 	root.sQuery = root.sQuery || {};
-	var helpers = helpers || {};
-	var version = '0.0.3';
 	
 	// sQuery core functions
 	sQuery.version = 'sQuery v.'.concat(version);
@@ -13,11 +14,24 @@
 	console.log(prefix.concat('loaded! ', sQuery.version));
 
 	// ELEMENTS
-	// TODO: NEED OPTIMIZATION!!!!
-	$ = sQuery.$ = function (selector) {
-		var found = document.querySelectorAll(selector);
-		return found.length === 1 ? found[0] : found;
+	sQuery.$ = function (selector, context) {
+		var ctx = context || window.document;
+		if (selector.charAt(0) === '#' &&
+			selector.indexOf(' ') === -1 &&
+			selector.indexOf('.') === -1) {
+			return document.getElementById(selector.slice(1));
+		} else {
+			return ctx.querySelectorAll(selector);
+		}
+		// var found = document.querySelectorAll(selector);
+		// return found.length === 1 ? found[0] : found;
 	};
+
+	if (root.$) {
+		throw 'You have jQuery imported. Consider removing it';
+	} else {
+		$ = sQuery.$;
+	}
 
 	Element.prototype.addClass = function (clName) {
 		this.classList.add(clName);
