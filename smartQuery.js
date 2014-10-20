@@ -23,8 +23,6 @@
 		} else {
 			return ctx.querySelectorAll(selector);
 		}
-		// var found = document.querySelectorAll(selector);
-		// return found.length === 1 ? found[0] : found;
 	};
 
 	if (root.$) {
